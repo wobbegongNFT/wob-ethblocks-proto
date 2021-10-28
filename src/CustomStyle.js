@@ -87,12 +87,12 @@ function mod_handler_1b(prog, mod1, mod2, mod3, mod4, mod5, mod6){
 }
 
 function mod_handler_2(prog, mod1, mod2, mod3, mod4, mod5, mod6){
-	let t = lerp(mod1, .09, 1.);
+	let t = lerp(mod1, .05, 1.);
 	let a = piecewise(t, [0,.49,.6,.67,.718,.883,1],[1,.99,.9,.322,.144,.008,0]); 
 	let b = piecewise(t, [0,.482,.606,.7,.846,.92,1],[.1,.79,.514,.3,.395,.554,.936]); 
 	prog.uniforms.select_lev = a;
 	prog.uniforms._mlev = b;
-	prog.uniforms._rlev = lerp(t, .08, .4);
+	prog.uniforms._rlev = lerp(t, .2, .6);
 
 	prog.uniforms._oscmixr = mod2;
 	prog.uniforms._sdf = mod3*.05;
@@ -123,8 +123,8 @@ const Display = ({canvasRef, block, width, height, animate, mod1, mod2, mod3, mo
 			prog.uniforms.offs = v1;
 			// console.log(s, v1.toFixed(2), v2.toFixed(2), a, b);
 
-			let n = min(lerp(rand.random(), .4, 1.1), 1);
-		 	prog.uniforms._div = n;
+			let n = min(lerp(rand.random(), .45, 1.1), 1);
+		 	prog.uniforms._div =  n;
 	},[block]);
 
 	/*update*/

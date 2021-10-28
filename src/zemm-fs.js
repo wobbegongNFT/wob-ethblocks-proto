@@ -46,6 +46,14 @@ const fs = /*glsl*/ `#version 300 es
 			0.213-0.213*s,  0.715-0.715*s,  0.072+0.928*s
 	    );
 	}
+	// https://www.shadertoy.com/view/XdcXzn
+	mat4 contrastMat(float c){
+		float t = (1. - c) / 2.;   
+	    return mat4( c, 0, 0, 0,
+	                 0, c, 0, 0,
+	                 0, 0, c, 0,
+	                 t, t, t, 1 );
+	}
 
 	vec2 fold(vec2 inp, float n, float m, float sig, float drift){
 	    vec2 v = inp;
@@ -80,9 +88,6 @@ const fs = /*glsl*/ `#version 300 es
 		vec2 offs1 = vec2(cos(offset*9.), sin(offset*14.));
 		vec2 offs2 = vec2(cos(offset*12.), sin(offset*7.));
 
-		// vec2 offs1 = vec2(cos(offs*9.), sin(offs*14.))+vec2(sin(offs_fine*-10.), cos(offs_fine*9.));
-		// vec2 offs2 = vec2(cos(offs*12.), sin(offs*7.))+vec2(sin(offs_fine*4.), cos(offs_fine*11.));
-
 		vec3 cta = texture(u_sampler, vec3(tuv, idx)+vec3(offs1,0.) ).xyz;
 		vec3 ctb = texture(u_sampler2, vec3(tuv, idx2)+vec3(offs2,0.) ).xyz;
 		vec3 cc = mix(cta, ctb, texmix);
@@ -93,10 +98,11 @@ const fs = /*glsl*/ `#version 300 es
 
 		vec3 ct1 = texture(u_sampler, vec3(uv_shift, idx)+vec3(offs1,0.) ).xyz;
 		vec3 ct2 = texture(u_sampler2, vec3(uv_shift, idx2)+vec3(offs2,0.) ).xyz;
-		vec3 c = mix(ct1,ct2, texmix);
-		// c *= satMat(2.);
+		vec3 c = 1.-mix(ct1, ct2, texmix);
+		c *= satMat(1.5);
 
-		fragColor = vec4(mix(c, 1.-c, _invert), 1.0);
+		fragColor = contrastMat(1.1)*vec4(c, 1.0);
+		// fragColor = vec4(c, 1.0);
 	}`;
 
 	export {fs};

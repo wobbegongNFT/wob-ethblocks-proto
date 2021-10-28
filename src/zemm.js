@@ -171,13 +171,14 @@ const prog = {
 	 	idx: 0,
 	 	idx2: 0,
 	 	texmix: 0.5,
-	 	zoom: 0.08,
+	 	zoom: 0.09,
 	 	offs: 0,
 	 	_div: .8,
 	 	_drift : .6,
 	 	// _p05: .05,
 	 	_invert: 1.,
-	 	sat: 1.
+	 	sat: 1.12,
+	 	// _oscmixm: .3
 	 },
 	 // rendercb : rendercb,
 	  // gui: gui,
