@@ -162,6 +162,8 @@ const gui = {
 
 };
 
+const tex_len = {texlen_a: base64.mage.length, texlen_b: base64.toa.length };
+
 const prog = {
 	 // res: { width: 800, height: 600},
 	 fs: fs,
@@ -170,7 +172,7 @@ const prog = {
 	 	// _rlev: .08,
 	 	idx: 0,
 	 	idx2: 0,
-	 	texmix: 0.5,
+	 	texmix: 1.,//0.5,
 	 	zoom: 0.09,
 	 	offs: 0,
 	 	_div: .8,
@@ -178,13 +180,20 @@ const prog = {
 	 	// _p05: .05,
 	 	_invert: 1.,
 	 	sat: 1.12,
+	 	tex_len_a : tex_len.texlen_a,
+	 	tex_len_b : tex_len.texlen_b,
+	 	rare_attribute: 0,
+	 	rare_attribute2: 0,
+	 	rare_attribute3: 0,
+	 	rare_attribute4 : 0,
+	 	rare_attribute5: 0
 	 	// _oscmixm: .3
 	 },
 	 // rendercb : rendercb,
 	  // gui: gui,
 	  // on: false
 	 // clearcolor: [0.2, 0.8, 0.0, 1],
-	 etc : {texlen_a: base64.mage.length, texlen_b: base64.toa.length }
+	 etc : tex_len
 };
 
 export default prog;
