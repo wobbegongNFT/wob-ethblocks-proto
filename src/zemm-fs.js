@@ -144,7 +144,7 @@ const fs = /*glsl*/ `#version 300 es
 		tuv +=.5*zoom;
 
 		float wob = (rare_attribute3 > 0.) ? wobble(tuv, u_time*min(_oscmixr*1.,.4), 8.) : 1.;
-		vec2 v = fold(uv, 150., _div, mix(1.,wob,.0)*rot_r, _drift/*-mix(1.,wob,.01)*/, _sdf*mix(1.,wob,.4)); //-n
+		vec2 v = fold(uv, 150., _div, mix(1.,wob,.0)*rot_r, _drift/*-mix(1.,wob,.01)*/, (rare_attribute3*.018+_sdf)*mix(1.,wob,.4)); //-n
 
 		vec2 offs1 = offset(offs+offs_fine, vec2(9., 14.));
 		vec2 offs2 = offset(offs+offs_fine, vec2(12., 7.));

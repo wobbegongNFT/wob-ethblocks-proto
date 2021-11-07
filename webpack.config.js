@@ -1,7 +1,7 @@
  const webpack = require("webpack");
  const path = require( 'path' );
  // const WebpackAssetsManifest = require("webpack-assets-manifest");
- const { BundleAnalyzerPlugin } = require("webpack-bundle-analyzer");
+ // const { BundleAnalyzerPlugin } = require("webpack-bundle-analyzer");
  
  module.exports = {
 	plugins: [
@@ -11,11 +11,11 @@
 		new webpack.EnvironmentPlugin({
 			"process.env.NODE_ENV": process.env.NODE_ENV
 		}),
-		new BundleAnalyzerPlugin({
-			analyzerMode: "static",
-			openAnalyzer: false,
-			reportFilename: "webpack-bundle-analyzer-report.html"
-		}),
+		// new BundleAnalyzerPlugin({
+		// 	analyzerMode: "static",
+		// 	openAnalyzer: false,
+		// 	reportFilename: "webpack-bundle-analyzer-report.html"
+		// }),
 		// new WebpackAssetsManifest()
 	],
 	// mode: 'development',

@@ -30,7 +30,7 @@ const styleMetadata = {
     mod2: 0.3,
     mod3: 0.,
     mod4: 0.5,
-    mod5: 0,
+    // mod5: 0,
     // mod6: 0.,
     // color1: '#fff000',
     // background: '#000000',
@@ -92,20 +92,36 @@ function mod_handler(prog, mod1, mod2, mod3, mod4, mod5, mod6){
 
 	prog.uniforms.texmix = mod4; //min(max(.2, mod4), .8);
 	prog.uniforms.offs_fine = 0; //(mod5-.5)*.77;	
-
+/*
 	let rare_attr = round(mod5*5);
 	prog.uniforms.rare_attribute1 = (rare_attr == 1 ? 1 : 0);
 	prog.uniforms.rare_attribute2 = (rare_attr == 2 ? 1 : 0)
 	prog.uniforms.rare_attribute3 = (rare_attr == 3 ? 1 : 0)
 	prog.uniforms.rare_attribute4 = (rare_attr == 4 ? 1 : 0)
 	prog.uniforms.rare_attribute5 = (rare_attr == 5 ? 1 : 0)
-	// console.log(rare_attr);
+	console.log(rare_attr);
+*/
 }
 
-const Display = ({canvasRef, block, width, height, animate, mod1, mod2, mod3, mod4, mod5, /*mod6,*/ attributesRef, handleResize,...props}) =>{
+function addGUI(glview, parentel){
+	const gui = new dat.GUI({ autoPlace: false });
+	gui.domElement.style.position = 'absolute';
+	gui.domElement.style.display = 'inlineBlock'
+	gui.domElement.float = 'right'
+	gui.domElement.style.top = '2px'
+	// gui.domElement.style.left = '2px'
+	gui.domElement.style.marginLeft = '68%'
+	parentel.appendChild(gui.domElement);
+	gui.__closeButton.style.visibility = "hidden";
+	glview.initGui(gui);
+}
+
+const Display = ({canvasRef, block, width, height, animate, mod1, mod2, mod3, mod4, /*mod5, mod6,*/ attributesRef, handleResize,...props}) =>{
 	/*init*/
 	useEffect(() => {
 		glob.glview = new Glview(canvasRef.current, prog);
+		addGUI(glob.glview, document.querySelector('#root'));
+		window.sceneref = glob.glview.programs[0];
 		return ()=>{
 			if(glob.glview){glob.glview.switchPogram(-1);}
 		}
@@ -121,9 +137,9 @@ const Display = ({canvasRef, block, width, height, animate, mod1, mod2, mod3, mo
 	/*mod update*/
 	useEffect(() =>{	
 
-		mod_handler(prog, mod1, mod2, mod3, mod4, mod5);
+		mod_handler(prog, mod1, mod2, mod3, mod4);
 
-	},[mod1, mod2, mod3, mod4, mod5]);
+	},[mod1, mod2, mod3, mod4]);
 
 	useEffect(() =>{
 		console.log('aref', attributesRef);

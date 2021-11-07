@@ -20,144 +20,40 @@ const tex_options2 = {
 };
 
 const gui = {
-	name: 'zemm',
+	name: 'rare-attributes',
 	open: true,
 	switch: false,
 	fields: [
-
 		{
-			idx : 0,
-			min: 0,
-			max: tex_options.src.length-1,
-			step: 1,
+			attr1 : false,
 			onChange: (val)=>{
-				prog.uniforms.idx = val;
+				prog.uniforms.rare_attribute1 = (+val);
 			}
 		},
 		{
-			idx2 : 0,
-			min: 0,
-			max: tex_options2.src.length-1,
-			step: 1,
+			attr2 : false,
 			onChange: (val)=>{
-				prog.uniforms.idx2 = val;
+				prog.uniforms.rare_attribute2 = (+val);
 			}
 		},
 		{
-			texmix : 0,
-			min: 0,
-			max: 1,
-			step: .01,
+			attr3 : false,
 			onChange: (val)=>{
-				prog.uniforms.texmix = val;
+				prog.uniforms.rare_attribute3 = (+val);
 			}
-		},
+		},		
 		{
-			zoom : 0,
-			min: 0,
-			max: 1,
-			step: .01,
+			attr4 : false,
 			onChange: (val)=>{
-				prog.uniforms.zoom = val;
+				prog.uniforms.rare_attribute4 = (+val);
 			}
-		},
+		},		
 		{
-			offs : 0,
-			min: 0,
-			max: 1,
-			step: .001,
+			attr5 : false,
 			onChange: (val)=>{
-				prog.uniforms.offs = val;
+				prog.uniforms.rare_attribute5 = (+val);
 			}
-		},
-		{
-			col_select : 0,
-			min: 0,
-			max: 1,
-			step: .01,
-			onChange: (val)=>{
-				prog.uniforms.select_lev = val;
-			}
-		},
-		{
-			div : .8,
-			min: .4,
-			max: 1,
-			step: 0.01,
-			onChange: (val)=>{
-				prog.uniforms._div = val;
-			}
-		},
-		{
-			lev : 0,
-			min: 0,
-			max: 1,
-			step: 0.01,
-			onChange: (val)=>{
-				prog.uniforms._mlev = val;
-			}
-		},
-		/*
-		{
-			m_oscmix : 0,
-			min: 0,
-			max: 1,
-			step: 0.01,
-			onChange: (val)=>{
-				prog.uniforms._oscmixm = val;
-			}
-		},
-		*/
-		// {
-		// 	r_lev : .08,
-		// 	min: .08,
-		// 	max: .4,
-		// 	step: 0.01,
-		// 	onChange: (val)=>{
-		// 		prog.uniforms._rlev = val;
-		// 	}
-		// },
-		{
-			oscmix : 0,
-			min: 0,
-			max: 1,
-			step: 0.01,
-			onChange: (val)=>{
-				prog.uniforms._oscmixr = val;
-			}
-		},
-		// {
-		// 	drift : .6,
-		// 	min: 0,
-		// 	max: 1,
-		// 	step: 0.01,
-		// 	onChange: (val)=>{
-		// 		prog.uniforms._drift = val;
-		// 	}
-		// },
-		{
-			fract : 0,
-			min: 0,
-			max: .5,
-			step: 0.01,
-			onChange: (val)=>{
-				prog.uniforms._sdf = val*.1;
-			}
-		},
-		{
-			sat : 1,
-			min: 0,
-			max: 3,
-			step: 0.01,
-			onChange: (val)=>{
-				prog.uniforms.sat = val;
-		}
-		// {
-		// 	post_invert: true,
-		// 	onChange: (val)=>{
-		// 		prog.uniforms._invert = val ? 1 : 0;
-		// 	}
-		},
+		},		
 	]
 
 };
@@ -182,7 +78,7 @@ const prog = {
 	 	sat: 1.12,
 	 	tex_len_a : tex_len.texlen_a,
 	 	tex_len_b : tex_len.texlen_b,
-	 	rare_attribute: 0,
+	 	rare_attribute1: 0,
 	 	rare_attribute2: 0,
 	 	rare_attribute3: 0,
 	 	rare_attribute4 : 0,
@@ -190,7 +86,7 @@ const prog = {
 	 	// _oscmixm: .3
 	 },
 	 // rendercb : rendercb,
-	  // gui: gui,
+	  gui: gui,
 	  // on: false
 	 // clearcolor: [0.2, 0.8, 0.0, 1],
 	 etc : tex_len
