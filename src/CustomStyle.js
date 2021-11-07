@@ -80,9 +80,9 @@ function block_handler(prog, block){
 }
 
 function mod_handler(prog, mod1, mod2, mod3, mod4, mod5, mod6){
-	let t = lerp(mod1, .05, 1.);
+	let t = lerp(mod1, .0, 1.);
 	let a = piecewise(t, [0,.49,.6,.67,.718,.883,1],[1,.99,.9,.322,.144,.008,0]); 
-	let b = piecewise(t, [0,.482,.606,.7,.846,.92,1],[.1,.79,.514,.3,.395,.554,.936]); 
+	let b = piecewise(t, [0,.482,.606,.7,.846,.92,1],[.05,.79,.514,.3,.395,.554,.936]); 
 	prog.uniforms.select_lev = a;
 	prog.uniforms._mlev = b;
 	prog.uniforms._rlev = lerp(t, .2, .6);
@@ -94,12 +94,12 @@ function mod_handler(prog, mod1, mod2, mod3, mod4, mod5, mod6){
 	prog.uniforms.offs_fine = 0; //(mod5-.5)*.77;	
 
 	let rare_attr = round(mod5*5);
-	prog.uniforms.rare_attribute = (rare_attr == 1 ? 1 : 0);
+	prog.uniforms.rare_attribute1 = (rare_attr == 1 ? 1 : 0);
 	prog.uniforms.rare_attribute2 = (rare_attr == 2 ? 1 : 0)
 	prog.uniforms.rare_attribute3 = (rare_attr == 3 ? 1 : 0)
 	prog.uniforms.rare_attribute4 = (rare_attr == 4 ? 1 : 0)
 	prog.uniforms.rare_attribute5 = (rare_attr == 5 ? 1 : 0)
-	console.log(rare_attr);
+	// console.log(rare_attr);
 }
 
 const Display = ({canvasRef, block, width, height, animate, mod1, mod2, mod3, mod4, mod5, /*mod6,*/ attributesRef, handleResize,...props}) =>{

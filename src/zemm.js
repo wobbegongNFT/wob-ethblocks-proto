@@ -172,7 +172,7 @@ const prog = {
 	 	// _rlev: .08,
 	 	idx: 0,
 	 	idx2: 0,
-	 	texmix: 1.,//0.5,
+	 	texmix: 0.5,
 	 	zoom: 0.09,
 	 	offs: 0,
 	 	_div: .8,
