@@ -1,5 +1,7 @@
-import {fs} from "./zemm-fs.js";
-import base64 from '../resources/base64curated.js';
+import fs from "./zemm-fs.js";
+import fs2 from "./zemm-fs2.js";
+// import base64 from '../resources/base64curated.js';
+import base64 from '../resources/base64test.js';
 
 const tex_options = {
 	target: 'TEXTURE_2D_ARRAY',
@@ -62,7 +64,7 @@ const tex_len = {texlen_a: base64.mage.length, texlen_b: base64.toa.length };
 
 const prog = {
 	 // res: { width: 800, height: 600},
-	 fs: fs,
+	 fs: fs2,
 	 textures: [{u_sampler : tex_options}, {u_sampler2 : tex_options2}],
 	 uniforms: {
 	 	// _rlev: .08,

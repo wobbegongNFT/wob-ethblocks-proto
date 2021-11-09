@@ -146,7 +146,9 @@ class GlProg{
         if (!(p_tex instanceof Array)) p_tex = [p_tex];
         for(let tex of p_tex){
             for(let key in tex) 
-                this.uniforms[key] = twgl.createTexture(this.gl, gl_fields(this.gl, tex[key])); 
+                this.uniforms[key] = twgl.createTexture(this.gl, gl_fields(this.gl, tex[key]), (res)=>{
+                	// console.log('texture loaded');
+                }); 
         }
         if(this.prog.fs instanceof Array){
             this.fsprogs = [];

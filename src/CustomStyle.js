@@ -73,7 +73,7 @@ function block_handler(prog, block){
 	prog.uniforms.idx = a;
 	prog.uniforms.idx2 = b;
 	prog.uniforms.offs = v1;
-	console.log(num, a, b);
+	// console.log(num, a, b);
 
 	let n = min(lerp(rand.random(), .45, 1.1), 1);
  	prog.uniforms._div =  n;
