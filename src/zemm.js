@@ -29,33 +29,21 @@ const gui = {
 		{
 			attr1 : false,
 			onChange: (val)=>{
-				prog.uniforms.rare_attribute1 = (+val);
+				prog.uniforms.tex_attr = (+val);
 			}
 		},
 		{
 			attr2 : false,
 			onChange: (val)=>{
-				prog.uniforms.rare_attribute2 = (+val);
+				prog.uniforms._oscmixm = (+val);
 			}
 		},
 		{
 			attr3 : false,
 			onChange: (val)=>{
-				prog.uniforms.rare_attribute3 = (+val);
+				prog.uniforms.sig_attr = (+val);
 			}
-		},		
-		{
-			attr4 : false,
-			onChange: (val)=>{
-				prog.uniforms.rare_attribute4 = (+val);
-			}
-		},		
-		{
-			attr5 : false,
-			onChange: (val)=>{
-				prog.uniforms.rare_attribute5 = (+val);
-			}
-		},		
+		}	
 	]
 
 };

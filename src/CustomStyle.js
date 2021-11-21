@@ -90,8 +90,9 @@ function mod_handler(prog, mod1, mod2, mod3, mod4, mod5, mod6){
 	prog.uniforms._oscmixr = mod2;
 	prog.uniforms._sdf = mod3*.05;
 
-	prog.uniforms.texmix = mod4; //min(max(.2, mod4), .8);
+	prog.uniforms.texmix = min(max(.2, mod4), .8);
 	prog.uniforms.offs_fine = 0; //(mod5-.5)*.77;	
+	// prog.uniforms._oscmixm = mod5;
 /*
 	let rare_attr = round(mod5*5);
 	prog.uniforms.rare_attribute1 = (rare_attr == 1 ? 1 : 0);

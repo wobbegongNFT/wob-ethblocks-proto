@@ -122,7 +122,9 @@ const fs = /*glsl*/ `#version 300 es
 	float ssig(vec2 uv, vec2 v, float _t, float a){
 	    float t = _t+dot(uv-v,uv-v)*a;
 	    float f = sin(t)+sin(t*1.2)+sin(t*1.4)*.8+sin(t*1.6)*.5;
-	    return (f*.5+.5)*.1;		
+	    // f = (f*.5+.5)*.1;
+	    f = max(f*.2, 0.2)*.5;
+	    return f;		
 	}
 
 	vec2 offset(float offs, vec2 coef){
@@ -160,13 +162,13 @@ const fs = /*glsl*/ `#version 300 es
 		vec3 cta_r = texture(u_sampler, vec3(tuv, idx_r)+vec3(offsr,0.)).xyz;
 
 		// vec3 cc = mix(mix(cta, cta_r, mixr), ctb, texmix);
-		vec3 cc = mix(mix(cta, cta_r*(cta*.5+.5), rare_attribute1*.6), ctb, texmix);
+		vec3 cc = mix(mix(cta, cta_r*(cta*.5+.5), rare_attribute1*.0), ctb, texmix);
 
 		float chr = max(max(abs(cc.r-cc.b), abs(cc.r-cc.g)), abs(cc.b-cc.g));
 
 		vec2 uv_shift = mix(tuv,v, mix(1.,wob,.0)*mlev*mix(1.,chr,select_lev));
 
-		float s_sig = (rare_attribute4 > 0.) ? (.9+.1*ssig(tuv, vec2(.28,.8), u_time*5., 44.)) : 1.;
+		float s_sig = (rare_attribute4 > 0.) ? (.9+.1*ssig(tuv, vec2(.28,.8), u_time*_oscmixr*7., 44.)) : 1.;
 
 		vec3 ct1 = texture(u_sampler, vec3(uv_shift*a_anim, idx)+vec3(offs1,0.)).xyz;
 		vec3 ct2 = texture(u_sampler2, vec3(s_sig*uv_shift-b_anim, idx2)+vec3(offs2,0.)).xyz;
