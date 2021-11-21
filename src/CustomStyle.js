@@ -5,7 +5,7 @@ import prog from "./zemm.js";
 import * as dat from "./modules/dat.gui.module.min.js";
 // import MT from 'mersenne-twister';
 import MT from './mersenne.js';
-const {min, max, abs, round} = Math;
+const {min, max, abs, round, floor} = Math;
 /*
 <CustomStyle
   width={width}
@@ -49,6 +49,10 @@ function lerp(n, a, b){
 	return n*(b-a)+a;
 }
 
+function fract(f){
+	return f-floor(f);
+}
+
 // https://gist.github.com/gpiffault/10556503
 function piecewise(x, xs, ys) {
     var lo = 0, hi = xs.length - 1;
@@ -60,6 +64,14 @@ function piecewise(x, xs, ys) {
     return ys[lo] + (ys[hi] - ys[lo]) / (xs[hi] - xs[lo]) * (x - xs[lo]);
 };
 
+// https://www.shadertoy.com/view/4djSRW
+function hash11(f){
+    f = fract(f * .1031);
+    f *= f + 33.33;
+    f *= f + f;
+    return fract(f);
+}
+
 const rand = new MT(33);
 
 function block_handler(prog, block){
@@ -70,10 +82,14 @@ function block_handler(prog, block){
 
 	let a = Math.round(v1*(prog.etc.texlen_a-1));
 	let b = Math.round(v2*(prog.etc.texlen_b-1));
+	let c = Math.round(999*v1*v2%(prog.etc.texlen_a-1));
+	// let c = floor(hash11(6.*(3.3+a+b))*11.);
+
 	prog.uniforms.idx = a;
 	prog.uniforms.idx2 = b;
+	prog.uniforms.idxr = c;
 	prog.uniforms.offs = v1;
-	// console.log(num, a, b);
+	// console.log(num, a, b, c);
 
 	let n = min(lerp(rand.random(), .45, 1.1), 1);
  	prog.uniforms._div =  n;

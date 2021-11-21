@@ -1,5 +1,4 @@
 import fs from "./zemm-fs.js";
-import fs2 from "./zemm-fs2.js";
 // import base64 from '../resources/base64curated.js';
 import base64 from '../resources/base64test.js';
 
@@ -52,7 +51,7 @@ const tex_len = {texlen_a: base64.mage.length, texlen_b: base64.toa.length };
 
 const prog = {
 	 // res: { width: 800, height: 600},
-	 fs: fs2,
+	 fs: fs,
 	 textures: [{u_sampler : tex_options}, {u_sampler2 : tex_options2}],
 	 uniforms: {
 	 	// _rlev: .08,
@@ -63,16 +62,9 @@ const prog = {
 	 	offs: 0,
 	 	_div: .8,
 	 	_drift : .6,
-	 	// _p05: .05,
 	 	_invert: 1.,
 	 	sat: 1.12,
-	 	tex_len_a : tex_len.texlen_a,
-	 	tex_len_b : tex_len.texlen_b,
-	 	rare_attribute1: 0,
-	 	rare_attribute2: 0,
-	 	rare_attribute3: 0,
-	 	rare_attribute4 : 0,
-	 	rare_attribute5: 0
+
 	 	// _oscmixm: .3
 	 },
 	 // rendercb : rendercb,
