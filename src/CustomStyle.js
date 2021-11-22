@@ -72,7 +72,9 @@ function hash11(f){
     return fract(f);
 }
 
-const rand = new MT(33);
+function wbool(r, w){
+	return Math.abs(.5-r)*2. > w ? 0 : 1;
+}
 
 function block_handler(prog, block){
 	let s = block.hash.slice(0, 16);
@@ -91,12 +93,29 @@ function block_handler(prog, block){
 	prog.uniforms.offs = v1;
 	// console.log(num, a, b, c);
 
-	let n = min(lerp(rand.random(), .45, 1.1), 1);
+	let n = min(lerp(v1, .45, 1.1), 1);
  	prog.uniforms._div =  n;
+
+ 	let weights = [.1, .22, .05];  // doublemage, expand, ripple
+ 	rare_handler(prog, v1, weights, (p)=>{
+ 		if(p.uniforms.idx == 8 && p.uniforms.idx2 == 7 ){
+ 			prog.uniforms._oscmixm = 1;
+ 		}
+ 	});
+}
+
+function rare_handler(prog, r, weights, uniformrule){
+	let rare = weights.map(w => wbool(r, w));
+	prog.uniforms.tex_attr = rare[0];
+	prog.uniforms._oscmixm = rare[1];
+	prog.uniforms.sig_attr = rare[2];
+	let i = window.blabel ? window.blabel.innerHTML : '';
+	if(rare[0]||rare[1]||rare[2]){ console.log(i, r.toFixed(4), ...rare); }
+	if(uniformrule) uniformrule(prog);
 }
 
 function mod_handler(prog, mod1, mod2, mod3, mod4, mod5, mod6){
-	let t = lerp(mod1, .0, 1.);
+	let t = lerp(mod1, .02, 1.);
 	let a = piecewise(t, [0,.49,.6,.67,.718,.883,1],[1,.99,.9,.322,.144,.008,0]); 
 	let b = piecewise(t, [0,.482,.606,.7,.846,.92,1],[.05,.79,.514,.3,.395,.554,.936]); 
 	prog.uniforms.select_lev = a;
@@ -106,18 +125,8 @@ function mod_handler(prog, mod1, mod2, mod3, mod4, mod5, mod6){
 	prog.uniforms._oscmixr = mod2;
 	prog.uniforms._sdf = mod3*.05;
 
-	prog.uniforms.texmix = min(max(.2, mod4), .8);
+	prog.uniforms.texmix = min(max(.3, mod4), .7);
 	prog.uniforms.offs_fine = 0; //(mod5-.5)*.77;	
-	// prog.uniforms._oscmixm = mod5;
-/*
-	let rare_attr = round(mod5*5);
-	prog.uniforms.rare_attribute1 = (rare_attr == 1 ? 1 : 0);
-	prog.uniforms.rare_attribute2 = (rare_attr == 2 ? 1 : 0)
-	prog.uniforms.rare_attribute3 = (rare_attr == 3 ? 1 : 0)
-	prog.uniforms.rare_attribute4 = (rare_attr == 4 ? 1 : 0)
-	prog.uniforms.rare_attribute5 = (rare_attr == 5 ? 1 : 0)
-	console.log(rare_attr);
-*/
 }
 
 function addGUI(glview, parentel){
@@ -137,11 +146,13 @@ const Display = ({canvasRef, block, width, height, animate, mod1, mod2, mod3, mo
 	/*init*/
 	useEffect(() => {
 		glob.glview = new Glview(canvasRef.current, prog);
-		addGUI(glob.glview, document.querySelector('#root'));
+		// addGUI(glob.glview, document.querySelector('#root'));
 		window.sceneref = glob.glview.programs[0];
+		window.blabel = document.querySelector('.value-label');
 		return ()=>{
 			if(glob.glview){glob.glview.switchPogram(-1);}
 		}
+
 	}, [canvasRef]);
 
 	/*block update*/
