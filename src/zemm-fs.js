@@ -32,6 +32,9 @@ const fs = /*glsl*/ `#version 300 es
 	uniform float _mlev;
 	uniform float _rlev;
 
+	uniform float sat;
+	uniform float cont;
+
 	uniform float tex_attr;
 	uniform float sig_attr;
 	uniform float _oscmixm;
@@ -115,9 +118,10 @@ const fs = /*glsl*/ `#version 300 es
 		vec3 c_a = mix(ct1, ct1_r*(ct1*.5+.5), tex_attr*.6);
 
 		vec3 c = 1.-mix(/*ct1*/c_a, ct2, texmix);
-		c *= satMat(1.5);
+		// c *= satMat(1.5);
+		c *= satMat(1.+sat);
 
-		fragColor = contrastMat(1.1)*vec4(c, 1.0);
+		fragColor = contrastMat(1.+cont)*vec4(c, 1.0);
 		// fragColor = vec4(c, 1.0);
 	}`;
 

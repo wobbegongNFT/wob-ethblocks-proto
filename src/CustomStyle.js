@@ -6,7 +6,6 @@ import MT from './mersenne.js';
 import name_select from './namegen.js';
 const {min, max, abs, round, floor} = Math;
 
-
 // Required style metadata
 const styleMetadata = {
   name: '',
@@ -49,6 +48,12 @@ function genAttributes(prog, name){
 			 value: 'ripple'
 		});
 	}
+	let radiance = (prog.uniforms.sat+prog.uniforms.cont)*20;
+	radiance = Math.floor(radiance*1000)*.001;
+	attr.push({
+			 trait_type: 'radiance',
+			 value: radiance
+	});
 	return attr;
 }
 
@@ -77,7 +82,6 @@ function piecewise(x, xs, ys) {
     return ys[lo] + (ys[hi] - ys[lo]) / (xs[hi] - xs[lo]) * (x - xs[lo]);
 };
 
-// shadertoy.com/view/4djSRW
 function hash11(f){
     f = fract(f * .1031);
     f *= f + 33.33;
@@ -104,12 +108,13 @@ function block_handler(prog, block){
 	prog.uniforms.idx2 = b;
 	prog.uniforms.idxr = c;
 	prog.uniforms.offs = v1;
-
-	let n = min(lerp(v1, .45, 1.1), 1);
+	let n = min(lerp(v2, .45, 1.1), 1);
  	prog.uniforms._div =  n;
+ 	prog.uniforms.sat = v1*.4;
+ 	prog.uniforms.cont = v2*.1;
 
     // doublemage, expand, ripple
- 	let weights = [.1, .22, .05];  
+ 	let weights = [.098, .22, .04];  //98, 220, 40 per 1000
  	let rare = rare_handler(prog, v1, weights, (p)=>{
  		if(p.uniforms.idx == 8 && p.uniforms.idx2 == 7 ){
  			prog.uniforms._oscmixm = 1;
@@ -119,7 +124,7 @@ function block_handler(prog, block){
  	glob.attributes = genAttributes(prog, name);
  	let _i = window.blabel ? window.blabel.innerHTML : '';
  	console.log(_i, name, rare);
- 	if(glob.attributes.length > 1)
+ 	// if(glob.attributes.length > 1)
  		console.log(glob.attributes);
 }
 
@@ -139,11 +144,9 @@ function mod_handler(prog, mod1, mod2, mod3, mod4, mod5, mod6){
 	prog.uniforms.select_lev = a;
 	prog.uniforms._mlev = b;
 	prog.uniforms._rlev = lerp(t, .2, .6);
-
 	prog.uniforms._oscmixr = mod2;
 	prog.uniforms._sdf = mod3*.05;
-
-	prog.uniforms.texmix = min(max(.3, mod4), .7);
+	prog.uniforms.texmix = min(max(.23, mod4), .77);
 	prog.uniforms.offs_fine = 0; 
 }
 

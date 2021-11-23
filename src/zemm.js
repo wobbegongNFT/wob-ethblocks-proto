@@ -1,6 +1,6 @@
 import fs from "./zemm-fs.js";
-// import base64 from '../resources/base64curated.js';
-import base64 from '../resources/base64test.js';
+import base64 from '../resources/base64curated.js';
+// import base64 from '../resources/base64test.js';
 
 const tex_options = {
 	target: 'TEXTURE_2D_ARRAY',
@@ -25,6 +25,39 @@ const gui = {
 	open: true,
 	switch: false,
 	fields: [
+	/*
+		{
+			sat: 1.,
+			min: 1.,//.2,
+			max: 2.,
+			step: .01,
+			onChange: (val)=>{
+				prog.uniforms.sat = val;
+			}
+		},
+		{
+			contrast: 1.,
+			min: 1.,//.2,
+			max: 2.,
+			step: .01,
+			onChange: (val)=>{
+				prog.uniforms.cont = val;
+			}
+		},
+		{
+			hm: false,
+			onChange: (b)=>{
+				if(b){
+					prog.gui.fields[0].ref.setValue(1.5);
+					prog.gui.fields[1].ref.setValue(1.1);
+				}else{
+					prog.gui.fields[0].ref.setValue(1.);
+					prog.gui.fields[1].ref.setValue(1.);
+				}
+			}
+		}
+	*/
+	 /*
 		{
 			attr1 : false,
 			onChange: (val)=>{
@@ -42,7 +75,8 @@ const gui = {
 			onChange: (val)=>{
 				prog.uniforms.sig_attr = (+val);
 			}
-		}	
+		}
+		*/	
 	]
 
 };
@@ -63,7 +97,9 @@ const prog = {
 	 	_div: .8,
 	 	_drift : .6,
 	 	_invert: 1.,
-	 	sat: 1.12,
+	 	// sat: 1.12,
+	 	sat:1,
+	 	cont: 1
 
 	 	// _oscmixm: .3
 	 },
