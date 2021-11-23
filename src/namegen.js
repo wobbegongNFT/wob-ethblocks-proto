@@ -1,18 +1,3 @@
-const div = document.createElement('div');
-const button = document.createElement('button');
-const pre = document.createElement('pre');
-pre.style.margin = '12px';
-div.style.display = 'inlineBlock';
-pre.style.color = '#eeeeeeee';
-pre.style.width = '100';
-pre.style.height = '100';
-pre.style.fontSize = '4ch';
-button.innerHTML = 'name';
-button.style.margin = '10px';
-document.body.appendChild(div);
-div.appendChild(button);
-div.appendChild(pre);
-
 const {abs, round, floor, ceil, pow, random, sin, cos, PI} = Math;
 function fract(f){ return f-floor(f); }
 function rand(n){ return fract(sin(n) * 43758.5453123); }
@@ -58,7 +43,8 @@ function aa_triplet(v){
 }
 
 function symbolic_integer(v){
-	return round(1+v*11)+'th';
+	let a = ['1st', '2nd', '3rd', '4th', '5th', '6th', '7th', '8th', '9th', '10th', '11th'];
+	return a[round(v*10)];
 }
 
 function posessive_enumerative_phrase(v){
@@ -85,25 +71,59 @@ function randElement(arr, v, n){
 	return  arr[index];
 }
 
-function name(val){
-	let v = val || random();
-	let n = 999;
-	let noun1 = randElement(noun_batch_1, v, n--);
-	let noun2 = randElement(noun_batch_2, v, n--);
-	let adj = randElement(adjectives, v, n--);
-	let en_noun =randElement(enumaritive_nouns, v, n--);
-	let phrase = adj + ' ' + noun1 + ' ' + noun2 + ' ' + en_noun + ' ' + v.toFixed(4);
-	return phrase;
+function shuffle(a) {
+    var j, x, i;
+    for (i = a.length - 1; i > 0; i--) {
+        j = Math.floor(Math.random() * (i + 1));
+        x = a[i];
+        a[i] = a[j];
+        a[j] = x;
+    }
+    return a;
 }
 
-button.onclick = (e)=>{
-	let v = random();
-	let p = '';
-	p += monoid(v) + '\n'; 
-	p += doublet(v) + '\n'; 
-	p += dry_doublet(v) + '\n'; 
-	p += triplet(v) + '\n'; 
-	p += aa_triplet(v) + '\n'; 
-	p += posessive_enumerative_phrase(v) + '\n'; 
-	pre.innerHTML = p;
+function name_select(v){
+	let arr =
+	[[monoid(v), .1],
+	[doublet(v), .4],
+	[dry_doublet(v), .5],
+	[triplet(v), .7],
+	[aa_triplet(v), .4] ,
+	[posessive_enumerative_phrase(v), .09]];
+	arr = shuffle(arr);
+	let sum = 0;
+	for(var i = 0; i < arr.length; i++){
+		sum += arr[i][1];
+	}
+	let t = v*sum;
+	sum = 0;
+	for(var i = 0; i < arr.length; i++){
+		sum += arr[i][1];
+		if(sum > t){
+			return arr[i][0];
+		}
+	}
+	//miss
+	return triplet(v);
 }
+
+function display(v, el){
+	v = v || random();
+	let arr = 
+	[monoid(v),
+	doublet(v),
+	dry_doublet(v),
+	triplet(v),
+	aa_triplet(v),
+	posessive_enumerative_phrase(v)];
+	let sel =  select(v);
+	for(let i = 0; i < arr.length; i++){
+		if(arr[i] == sel){
+			arr[i] += ' -'
+		}
+	}
+	el.innerHTML = arr.join('\n');
+	console.log(sel);
+}
+
+export default name_select;
