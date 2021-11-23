@@ -1,6 +1,14 @@
 //// gl-view - by shellderr ////
 
-import * as twgl from "./twgl-full.module.min.js";
+import 
+{setUniforms,
+drawBufferInfo,
+setBuffersAndAttributes,
+createTexture,
+createProgramInfo,
+createBufferInfoFromArrays,
+resizeCanvasToDisplaySize}
+from "./twgl-full.module.min.js";
 
 const def_vs = /*glsl*/`#version 300 es                                           
     in vec4 position;
@@ -68,21 +76,21 @@ function pgm_render(time){
     this.uniforms.u_time = time * 0.001;
     this.uniforms.u_resolution = [this.gl.canvas.width, this.gl.canvas.height];
     this.prog.rendercb(this.pgm);
-    twgl.setUniforms(this.programInfo, this.uniforms);
+    setUniforms(this.programInfo, this.uniforms);
     this.gl.clear(this.gl.COLOR_BUFFER_BIT);
-    twgl.drawBufferInfo(this.gl, this.bufferInfo, this.drawtype);
+    drawBufferInfo(this.gl, this.bufferInfo, this.drawtype);
     this.req = requestAnimationFrame(this.render);
 }
 
 function pgm_chain_render(time){ 
     this.gl.useProgram(this.programInfo.program);
-    twgl.setBuffersAndAttributes(this.gl, this.programInfo, this.bufferInfo); 
+    setBuffersAndAttributes(this.gl, this.programInfo, this.bufferInfo); 
     this.uniforms.u_time = time * 0.001;
     this.uniforms.u_resolution = [this.gl.canvas.width, this.gl.canvas.height];
     this.prog.rendercb(this.pgm);
-    twgl.setUniforms(this.programInfo, this.uniforms);
+    setUniforms(this.programInfo, this.uniforms);
     this.gl.clear(this.gl.COLOR_BUFFER_BIT);
-    if(this.prog.on)twgl.drawBufferInfo(this.gl, this.bufferInfo, this.drawtype);
+    if(this.prog.on)drawBufferInfo(this.gl, this.bufferInfo, this.drawtype);
     for(let p of this.chain){
         if(p.prog.on) chain_render(p, this.uniforms);
     }
@@ -91,13 +99,13 @@ function pgm_chain_render(time){
 
 function chain_render(prog, uniforms){
     prog.gl.useProgram(prog.programInfo.program);
-    twgl.setBuffersAndAttributes(prog.gl, prog.programInfo, prog.bufferInfo); 
+    setBuffersAndAttributes(prog.gl, prog.programInfo, prog.bufferInfo); 
     prog.uniforms.u_time = uniforms.u_time;
     prog.uniforms.u_resolution = uniforms.u_resolution;
     prog.uniforms.u_mouse = uniforms.u_mouse;
     prog.prog.rendercb(prog.pgm);
-    twgl.setUniforms(prog.programInfo, prog.uniforms);
-    twgl.drawBufferInfo(prog.gl, prog.bufferInfo, prog.drawtype);
+    setUniforms(prog.programInfo, prog.uniforms);
+    drawBufferInfo(prog.gl, prog.bufferInfo, prog.drawtype);
 }
 
 function merge(dest, template){
@@ -146,23 +154,23 @@ class GlProg{
         if (!(p_tex instanceof Array)) p_tex = [p_tex];
         for(let tex of p_tex){
             for(let key in tex) 
-                this.uniforms[key] = twgl.createTexture(this.gl, gl_fields(this.gl, tex[key]), (res)=>{
+                this.uniforms[key] = createTexture(this.gl, gl_fields(this.gl, tex[key]), (res)=>{
                 	// console.log('texture loaded');
                 }); 
         }
         if(this.prog.fs instanceof Array){
             this.fsprogs = [];
             for(let fs of this.prog.fs)
-                this.fsprogs.push( twgl.createProgramInfo(this.gl, [this.prog.vs, fs]) );        
+                this.fsprogs.push( createProgramInfo(this.gl, [this.prog.vs, fs]) );        
             this.programInfo = this.fsprogs[0];
         }else{
-            this.programInfo = twgl.createProgramInfo(this.gl, [this.prog.vs, this.prog.fs]);
+            this.programInfo = createProgramInfo(this.gl, [this.prog.vs, this.prog.fs]);
         }
-        this.bufferInfo = twgl.createBufferInfoFromArrays(this.gl, this.prog.arrays);
+        this.bufferInfo = createBufferInfoFromArrays(this.gl, this.prog.arrays);
         this.gl.canvas.onpointermove = node ? null : (e)=>{
             this.uniforms.u_mouse[0] = e.offsetX; this.uniforms.u_mouse[1] = e.offsetY;
         }    
-        twgl.setBuffersAndAttributes(this.gl, this.programInfo, this.bufferInfo);
+        setBuffersAndAttributes(this.gl, this.programInfo, this.bufferInfo);
         this.prog.setupcb(this.pgm);
         if(this.chain){ 
             for(let i = 0; i < this.prog.chain.length; i++){
@@ -175,10 +183,10 @@ class GlProg{
     start(){
         this.gl.canvas.width = this.prog.res.width;
         this.gl.canvas.height = this.prog.res.height;
-        twgl.resizeCanvasToDisplaySize(this.gl.canvas);
+        resizeCanvasToDisplaySize(this.gl.canvas);
         this.gl.viewport(0, 0, this.gl.canvas.width, this.gl.canvas.height);
         this.gl.useProgram(this.programInfo.program);
-        twgl.setBuffersAndAttributes(this.gl, this.programInfo, this.bufferInfo); 
+        setBuffersAndAttributes(this.gl, this.programInfo, this.bufferInfo); 
         this.gl.clearColor(...this.prog.clearcolor);
         this.req = requestAnimationFrame(this.render);
     }

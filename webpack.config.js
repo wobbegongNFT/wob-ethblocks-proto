@@ -2,7 +2,8 @@
  const path = require( 'path' );
  // const WebpackAssetsManifest = require("webpack-assets-manifest");
  // const { BundleAnalyzerPlugin } = require("webpack-bundle-analyzer");
- 
+ const TerserPlugin = require("terser-webpack-plugin");
+
  module.exports = {
 	plugins: [
 		new webpack.ProvidePlugin({
@@ -18,7 +19,7 @@
 		// }),
 		// new WebpackAssetsManifest()
 	],
-	// mode: 'development',
+	mode: 'production',
 	entry: {
 		main: "./src/index.js"
 	},
@@ -27,7 +28,14 @@
 		path: path.resolve('./public'),
 		filename: "main.js"
 	},
-	devtool: "eval-cheap-source-map",
+	optimization: {
+  	usedExports: true,
+  	minimize: true,
+  	minimizer: [
+   		new TerserPlugin()
+  	]
+ 	},
+	// devtool: "eval-cheap-source-map",
 	module: {
 		rules: [
 		    {
