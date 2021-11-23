@@ -60,10 +60,10 @@ function posessive_enumerative_phrase(v){
 	return adj + ' '+ na+"'s " + symbolic_integer(v) + ' ' + nb;
 }
 
-let noun_batch_1 = ['troll', 'wind', 'consiousness', 'tree', 'pyrite', 'dream', 'stone', 'hologram', 'hill', 'gultch', 'bog', 'stream', 'river', 'machine',  'hand', 'rock', 'splitter', 'monolith'];
-let noun_batch_2 = ['branch', 'kraken', 'haggler', 'squire', 'academy', 'pact', 'valley', 'pyramid', 'structure', 'building', 'procession', 'spire', 'portal', 'hovel', 'village',  'passage', 'temple', 'lizard'];
-let adjectives = ['lunar','celestial', 'entombed', 'bismuth', 'spectral', 'folding', 'floating' ,'titan', 'hidden', 'frozen', 'silver', 'subterratian', 'ancient', 'jovian', 'old', 'barren', 'vedic', 'aquatic', 'solar', 'submerged',  'acoustic'];
-let enumaritive_nouns = ['level', 'basin', 'beam', 'wing', 'basin', 'echo',  'durge', 'seed' ];
+let noun_batch_1 = ['troll', 'wind', 'consiousness', 'tree', 'pyrite', 'dream', 'stone', 'hologram', 'hill', 'gultch', 'bog', 'stream', 'river', 'machine',  'hand', 'rock', 'splitter', 'monolith', 'bone','buddah', 'moon', 'fire', 'node', 'tether', 'willow', 'fairie', 'frog'];
+let noun_batch_2 = ['branch', 'kraken', 'haggler', 'squire', 'academy', 'pact', 'valley', 'pyramid', 'structure', 'building', 'procession', 'spire', 'portal', 'hovel', 'village', 'passage', 'temple', 'lizard', 'box', 'cloud', 'star', 'protocol', 'fog', 'house', 'seed', 'net', 'network', 'mask', 'grid', 'circle', 'storm', 'body', 'self', 'pillar', 'trench' ];
+let adjectives = ['lunar','celestial', 'entombed', 'bismuth', 'spectral', 'folding', 'floating' ,'titan', 'hidden', 'frozen', 'silver', 'subterratian', 'ancient', 'jovian', 'old', 'barren', 'vedic', 'aquatic', 'solar', 'submerged',  'acoustic', 'humble', 'dancing', 'metal', 'elder', 'transformed', 'solitary', 'verdant', 'forgotten', 'crystal', 'broken', 'giant', 'underwater', 'singing', 'living', 'burning'];
+let enumaritive_nouns = ['level', 'basin', 'beam', 'wing', 'basin', 'echo', 'durge', 'seed' ];
 // let prefix_adjectives = ["Herm's", "Nurn's", 'forgotten', 'Venusian'] 
 
 function randElement(arr, v, n){
@@ -71,10 +71,10 @@ function randElement(arr, v, n){
 	return  arr[index];
 }
 
-function shuffle(a) {
+function shuffle(a, v) {
     var j, x, i;
     for (i = a.length - 1; i > 0; i--) {
-        j = Math.floor(Math.random() * (i + 1));
+        j = Math.floor(rand(v+i) * (i + 1));
         x = a[i];
         a[i] = a[j];
         a[j] = x;
@@ -85,12 +85,12 @@ function shuffle(a) {
 function name_select(v){
 	let arr =
 	[[monoid(v), .1],
-	[doublet(v), .4],
-	[dry_doublet(v), .5],
+	[doublet(v), .5],
+	[dry_doublet(v), .4],
 	[triplet(v), .7],
-	[aa_triplet(v), .4] ,
+	[aa_triplet(v), .6] ,
 	[posessive_enumerative_phrase(v), .09]];
-	arr = shuffle(arr);
+	arr = shuffle(arr, v);
 	let sum = 0;
 	for(var i = 0; i < arr.length; i++){
 		sum += arr[i][1];
@@ -105,6 +105,13 @@ function name_select(v){
 	}
 	//miss
 	return triplet(v);
+}
+
+function enumeration(v){
+	return {
+		trait: randElement(enumaritive_nouns, v, 777),
+		value: Math.floor(v*1000)*.01
+	}
 }
 
 function display(v, el){
@@ -126,4 +133,4 @@ function display(v, el){
 	console.log(sel);
 }
 
-export default name_select;
+export {name_select, enumeration};

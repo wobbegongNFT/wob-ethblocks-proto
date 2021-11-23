@@ -3,7 +3,7 @@ import { Glview } from "./modules/glview.js";
 import prog from "./zemm.js";
 // import * as dat from "./modules/dat.gui.module.min.js";
 import MT from './mersenne.js';
-import name_select from './namegen.js';
+import{name_select, enumeration} from './namegen.js';
 const {min, max, abs, round, floor} = Math;
 
 // Required style metadata
@@ -22,7 +22,7 @@ const styleMetadata = {
 
 export { styleMetadata };
 
-function genAttributes(prog, name){
+function genAttributes(prog, name, en){
 	let attr = [];
 	if(name){
 		attr.push({
@@ -54,6 +54,12 @@ function genAttributes(prog, name){
 			 trait_type: 'radiance',
 			 value: radiance
 	});
+	if(en){
+		attr.push({
+			 trait_type: en.trait,
+			 value: en.value
+		});		
+	}
 	return attr;
 }
 
@@ -114,18 +120,18 @@ function block_handler(prog, block){
  	prog.uniforms.cont = v2*.1;
 
     // doublemage, expand, ripple
- 	let weights = [.098, .22, .04];  //98, 220, 40 per 1000
+ 	let weights = [.088, .22, .04];  //88, 220, 40 per 1000
  	let rare = rare_handler(prog, v1, weights, (p)=>{
  		if(p.uniforms.idx == 8 && p.uniforms.idx2 == 7 ){
  			prog.uniforms._oscmixm = 1;
  		}
  	});
  	let name = name_select(v1);
- 	glob.attributes = genAttributes(prog, name);
+ 	let en = enumeration(v1+v2);
+ 	glob.attributes = genAttributes(prog, name, en);
  	let _i = window.blabel ? window.blabel.innerHTML : '';
  	console.log(_i, name, rare);
- 	// if(glob.attributes.length > 1)
- 		console.log(glob.attributes);
+ 	console.log(glob.attributes);
 }
 
 function rare_handler(prog, r, weights, uniformrule){

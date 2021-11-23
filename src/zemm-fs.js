@@ -118,11 +118,9 @@ const fs = /*glsl*/ `#version 300 es
 		vec3 c_a = mix(ct1, ct1_r*(ct1*.5+.5), tex_attr*.6);
 
 		vec3 c = 1.-mix(/*ct1*/c_a, ct2, texmix);
-		// c *= satMat(1.5);
 		c *= satMat(1.+sat);
 
 		fragColor = contrastMat(1.+cont)*vec4(c, 1.0);
-		// fragColor = vec4(c, 1.0);
 	}`;
 
 	export default fs;

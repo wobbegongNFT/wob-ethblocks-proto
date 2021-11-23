@@ -75,9 +75,9 @@ function posessive_enumerative_phrase(v){
 	return adj + ' '+ na+"'s " + symbolic_integer(v) + ' ' + nb;
 }
 
-let noun_batch_1 = ['troll', 'wind', 'consiousness', 'tree', 'pyrite', 'dream', 'stone', 'hologram', 'hill', 'gultch', 'bog', 'stream', 'river', 'machine',  'hand', 'rock', 'splitter', 'monolith', 'bone', 'moon', 'shark', 'cyclops', 'buddah', 'node', 'head', 'shoe', 'rod', 'tether', 'pill', 'frog', 'willow', 'fairie'  ];
-let noun_batch_2 = ['branch', 'kraken', 'haggler', 'squire', 'academy', 'pact', 'valley', 'pyramid', 'structure', 'building', 'procession', 'spire', 'portal', 'hovel', 'village',  'passage', 'temple', 'lizard', 'box', 'cloud', 'fire', 'star', 'club', 'DAO', 'protocol','fog', 'house', 'seed', 'net', 'networ', 'coat', 'mask', 'grid', 'circle', 'storm', 'body', 'self', 'pillars'  ];
-let adjectives = ['lunar','celestial', 'entombed', 'bismuth', 'spectral', 'folding', 'floating' ,'titan', 'hidden', 'frozen', 'silver', 'subterratian', 'ancient', 'jovian', 'old', 'barren', 'vedic', 'aquatic', 'solar', 'submerged',  'acoustic', 'blazing', 'humble', 'laughing', 'dancing', 'metal', 'elder', 'transformer', 'young', 'crystal', 'broken', 'giant', 'underwater', 'righteous', 'singing', 'living', 'burning', 'stone' ];
+let noun_batch_1 = ['troll', 'wind', 'consiousness', 'tree', 'pyrite', 'dream', 'stone', 'hologram', 'hill', 'gultch', 'bog', 'stream', 'river', 'machine',  'hand', 'rock', 'splitter', 'monolith', 'bone', 'moon', 'cyclops', 'buddah', 'fire', 'node', 'tether', 'willow', 'fairie', 'frog'];
+let noun_batch_2 = ['branch', 'kraken', 'haggler', 'squire', 'academy', 'pact', 'valley', 'pyramid', 'structure', 'building', 'procession', 'spire', 'portal', 'hovel', 'village', 'passage', 'temple', 'lizard', 'box', 'cloud', 'star', 'protocol', 'fog', 'house', 'seed', 'net', 'network', 'coat', 'mask', 'grid', 'circle', 'storm', 'body', 'self', 'pillar', 'trench' ];
+let adjectives = ['lunar','celestial', 'entombed', 'bismuth', 'spectral', 'folding', 'floating' ,'titan', 'hidden', 'frozen', 'silver', 'subterratian', 'ancient', 'jovian', 'old', 'barren', 'vedic', 'aquatic', 'solar', 'submerged',  'acoustic', 'blazing', 'humble', 'laughing', 'dancing', 'metal', 'elder', 'transformed', 'solitary', 'verdant', 'forgotten','crystal', 'broken', 'giant', 'underwater', 'singing', 'living', 'burning'];
 let enumaritive_nouns = ['level', 'basin', 'beam', 'wing', 'basin', 'echo',  'durge', 'seed' ];
 // let prefix_adjectives = ["Herm's", "Nurn's", 'forgotten', 'Venusian'] 
 
@@ -100,10 +100,10 @@ function shuffle(a) {
 function select(v){
 	let arr =
 	[[monoid(v), .1],
-	[doublet(v), .4],
-	[dry_doublet(v), .5],
+	[doublet(v), .55],
+	[dry_doublet(v), .4],
 	[triplet(v), .7],
-	[aa_triplet(v), .4] ,
+	[aa_triplet(v), .6] ,
 	[posessive_enumerative_phrase(v), .09]];
 	arr = shuffle(arr);
 	let sum = 0;
