@@ -60,8 +60,8 @@ function posessive_enumerative_phrase(v){
 	return adj + ' '+ na+"'s " + symbolic_integer(v) + ' ' + nb;
 }
 
-let noun_batch_1 = ['troll', 'wind', 'consiousness', 'tree', 'pyrite', 'dream', 'stone', 'hologram', 'hill', 'gultch', 'bog', 'stream', 'river', 'machine',  'hand', 'rock', 'splitter', 'monolith', 'bone','buddah', 'moon', 'fire', 'node', 'tether', 'willow', 'fairie', 'frog'];
-let noun_batch_2 = ['branch', 'kraken', 'haggler', 'squire', 'academy', 'pact', 'valley', 'pyramid', 'structure', 'building', 'procession', 'spire', 'portal', 'hovel', 'village', 'passage', 'temple', 'lizard', 'box', 'cloud', 'star', 'protocol', 'fog', 'house', 'seed', 'net', 'network', 'mask', 'grid', 'circle', 'storm', 'body', 'self', 'pillar', 'trench' ];
+let noun_batch_1 = ['troll', 'wind', 'consiousness', 'tree', 'pyrite', 'dream', 'stone', 'hologram', 'hill', 'gultch', 'bog', 'stream', 'river', 'machine',  'hand', 'rock', 'splitter', 'monolith', 'bone','buddah', 'moon', 'fire', 'cloud', 'tether','fog', 'willow', 'fairie', 'frog'];
+let noun_batch_2 = ['branch', 'kraken', 'haggler', 'squire', 'academy', 'pact', 'valley', 'pyramid', 'structure', 'building', 'procession', 'spire', 'portal', 'hovel', 'village', 'passage', 'temple', 'lizard', 'box', 'star', 'protocol',  'house', 'seed', 'ruin', 'net', 'network', 'mask', 'grid', 'circle', 'storm', 'body', 'self', 'pillar', 'trench' ];
 let adjectives = ['lunar','celestial', 'entombed', 'bismuth', 'spectral', 'folding', 'floating' ,'titan', 'hidden', 'frozen', 'silver', 'subterratian', 'ancient', 'jovian', 'old', 'barren', 'vedic', 'aquatic', 'solar', 'submerged',  'acoustic', 'humble', 'dancing', 'metal', 'elder', 'transformed', 'solitary', 'verdant', 'forgotten', 'crystal', 'broken', 'giant', 'underwater', 'singing', 'living', 'burning'];
 let enumaritive_nouns = ['level', 'basin', 'beam', 'wing', 'basin', 'echo', 'durge', 'seed' ];
 // let prefix_adjectives = ["Herm's", "Nurn's", 'forgotten', 'Venusian'] 

@@ -99,10 +99,12 @@ function wbool(r, w){
 	return abs(.5-r)*2. > w ? 0 : 1;
 }
 
+const r_const = 3;
+
 function block_handler(prog, block){
 	let s = block.hash.slice(0, 16);
 	let num = parseInt(s, 16);
-	let v1 = new MT(num+3).random();
+	let v1 = new MT(num+r_const).random();
 	let v2 = new MT(num*3).random();
 
 	let a = round(v1*(prog.etc.texlen_a-1));
@@ -127,7 +129,7 @@ function block_handler(prog, block){
  		}
  	});
  	let name = name_select(v1);
- 	let en = enumeration(v1+v2);
+ 	let en = enumeration(v1);
  	glob.attributes = genAttributes(prog, name, en);
  	let _i = window.blabel ? window.blabel.innerHTML : '';
  	console.log(_i, name, rare);
