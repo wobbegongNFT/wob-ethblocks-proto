@@ -1,6 +1,6 @@
 import fs from "./zemm-fs.js";
-import base64 from '../resources/base64curated.js';
-// import base64 from '../resources/base64test.js';
+// import base64 from '../resources/base64curated.js';
+import base64 from '../resources/base64test.js';
 
 const tex_options = {
 	target: 'TEXTURE_2D_ARRAY',

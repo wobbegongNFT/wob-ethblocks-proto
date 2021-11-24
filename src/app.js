@@ -89,7 +89,7 @@ function App() {
           }}
         >
          {/* <h3>EthBlock.art P5.js boilerplate</h3>*/}
-          <h3>Zemm/Shelderr</h3>
+          <h3>Zemm/Shelderr (test)</h3>
 
           {width && height ? (
             <CustomStyle
