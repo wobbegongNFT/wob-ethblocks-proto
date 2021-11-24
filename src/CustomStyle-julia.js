@@ -1,8 +1,8 @@
 import React, { useEffect, useMemo, useRef } from 'react';
 import { Glview } from "./modules/glview.js";
-import zemm from "./zemm.js";
+// import zemm from "./zemm.js";
 import testprog from "./julia.js";
-import * as dat from "./modules/dat.gui.module.min.js";
+// import * as dat from "./modules/dat.gui.module.min.js";
 import MT from 'mersenne-twister';
 
 /*
@@ -60,9 +60,9 @@ const Display = ({canvasRef, block, width, height, animate, mod1, mod2, mod3, mo
 
 	},[mod1, mod2, mod3, mod4]);
 
-	useEffect(() =>{
-		console.log('aref', attributesRef);
-	},[attributesRef /*, animate, handleResize*/]);
+	// useEffect(() =>{
+	// 	console.log('aref', attributesRef);
+	// },[attributesRef /*, animate, handleResize*/]);
 
 	useEffect(()=>{
   		const rng = new MT(parseInt(block.hash.slice(0, 16), 16));
