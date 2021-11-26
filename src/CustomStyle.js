@@ -46,8 +46,10 @@ const Display = ({canvasRef, block, width, height, animate, mod1, mod2, mod3, mo
 	/*init*/
 	useEffect(() => {
 		glob.glview = new Glview(canvasRef.current, testprog);
+		console.log('hi')
 		return ()=>{
-			if(glob.glview){glob.glview.switchPogram(-1);}
+			//if(glob.glview){glob.glview.switchPogram(-1);}
+			console.log('bye')
 		}
 	}, [canvasRef]);
 
@@ -68,6 +70,7 @@ const Display = ({canvasRef, block, width, height, animate, mod1, mod2, mod3, mo
   		const rng = new MT(parseInt(block.hash.slice(0, 16), 16));
 		let h = rng.random();
 		testprog.uniforms.hue = h;
+		console.log('block: ', block);
 	},[block]);
 
 	return useMemo(() => {
