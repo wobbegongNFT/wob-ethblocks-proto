@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useRef } from 'react';
 import { Glview } from "./modules/glview.js";
-import prog from "./zemm.js";
+import prog, {getProg} from "./zemm.js";
 import MT from './mersenne.js';
 import{name_select, enumeration} from './namegen.js';
 const {min, max, abs, round, floor} = Math;
@@ -23,6 +23,7 @@ export { styleMetadata };
 const glob = {
 	init : 0,
 	glview : null,
+	prog: null,
 	coord : [0,0]
 };
 
@@ -82,7 +83,7 @@ function genAttributes(prog, name, en){
 
 const r_const = 3;
 
-function block_handler(prog, block, print){
+function block_handler(prog, block, print, init){
 	let s = block.hash.slice(0, 16);
 	let num = parseInt(s, 16);
 	let v1 = new MT(num+r_const).random();
@@ -100,6 +101,8 @@ function block_handler(prog, block, print){
  	prog.uniforms._div =  n;
  	prog.uniforms.sat = v1*.4;
  	prog.uniforms.cont = v2*.1;
+
+ 	if(init) return prog.uniforms;
 
     // doublemage, expand, ripple
     //99, 300, 40 per 1000
@@ -159,9 +162,9 @@ const Display = ({canvasRef, block, width, height, animate, mod1, mod2, mod3, mo
 	//init
 	useEffect(() => {
 		if(glob.init < 1){
-			block_handler(prog, block);
-			glob.glview = new Glview(canvasRef.current, prog);
-			window.sceneprog = prog;
+			glob.prog = getProg(block_handler(prog, block, false, true));
+			glob.glview = new Glview(canvasRef.current, glob.prog);
+			window.sceneprog = glob.prog;
 			glob.init++;
 			console.log('hi', glob.init);
 		}
@@ -179,14 +182,14 @@ const Display = ({canvasRef, block, width, height, animate, mod1, mod2, mod3, mo
 	//block update
 	useEffect(() =>{
 
-		block_handler(prog, block, true);
+		block_handler(glob.prog, block, true);
 
 	},[block]);
 
 	//mod update
 	useEffect(() =>{	
 
-		mod_handler(prog, mod1, mod2, mod3, mod4);
+		mod_handler(glob.prog, mod1, mod2, mod3, mod4);
 
 	},[mod1, mod2, mod3, mod4]);
 

@@ -8,8 +8,9 @@ const fs = /*glsl*/ `#version 300 es
 
 	in vec2 v_texcoord;
 
-	uniform mediump sampler2DArray u_sampler;
-	uniform mediump sampler2DArray u_sampler2;
+	uniform mediump sampler2D u_sampler;
+	uniform mediump sampler2D u_sampler2;
+	uniform mediump sampler2D u_sampler3;
 
 	uniform float u_time;
 	uniform vec2 u_resolution;
@@ -101,8 +102,8 @@ const fs = /*glsl*/ `#version 300 es
 		vec2 offs1 = offset(offs+offs_fine, vec2(9., 14.));
 		vec2 offs2 = offset(offs+offs_fine, vec2(12., 7.));
 
-		vec3 cta = texture(u_sampler, vec3(tuv, idx)+vec3(offs1,0.) ).xyz;
-		vec3 ctb = texture(u_sampler2, vec3(tuv, idx2)+vec3(offs2,0.) ).xyz;
+		vec3 cta = texture(u_sampler, tuv+offs1).xyz;
+		vec3 ctb = texture(u_sampler2, tuv+offs2).xyz;
 		vec3 cc = mix(cta, ctb, texmix);
 
 		float chr = max(max(abs(cc.r-cc.b), abs(cc.r-cc.g)), abs(cc.b-cc.g));
@@ -111,10 +112,10 @@ const fs = /*glsl*/ `#version 300 es
 
 		float s_sig = step(0.01,sig_attr)*(.9+.1*ssig(tuv, vec2(.28,.8), u_time*_oscmixr*7., 44.))+(1.-sig_attr);
 
-		vec3 ct1 = texture(u_sampler, vec3(uv_shift, idx)+vec3(offs1,0.) ).xyz;
-		vec3 ct2 = texture(u_sampler2, vec3(s_sig*uv_shift, idx2)+vec3(offs2,0.) ).xyz;
+		vec3 ct1 = texture(u_sampler, uv_shift+offs1).xyz;
+		vec3 ct2 = texture(u_sampler2, s_sig*uv_shift+offs2).xyz;
 
-		vec3 ct1_r = texture(u_sampler, vec3(uv_shift, idxr)+vec3(offset(offs+offs_fine, vec2(10., 7.)),0.)).xyz;
+		vec3 ct1_r = texture(u_sampler3, uv_shift+offset(offs+offs_fine, vec2(10., 7.))).xyz;
 		vec3 c_a = mix(ct1, ct1_r*(ct1*.5+.5), tex_attr*.6);
 
 		vec3 c = 1.-mix(/*ct1*/c_a, ct2, texmix);
