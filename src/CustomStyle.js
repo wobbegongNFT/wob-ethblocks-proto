@@ -83,7 +83,7 @@ function genAttributes(prog, name, en){
 
 const r_const = 3;
 
-function block_handler(prog, block, print, init){
+function block_handler(prog, block, print){
 	let s = block.hash.slice(0, 16);
 	let num = parseInt(s, 16);
 	let v1 = new MT(num+r_const).random();
@@ -102,26 +102,18 @@ function block_handler(prog, block, print, init){
  	prog.uniforms.sat = v1*.4;
  	prog.uniforms.cont = v2*.1;
 
- 	if(init) return prog.uniforms;
-
     // doublemage, expand, ripple
     //99, 300, 40 per 1000
  	let weights = [.099, .3, .04];  
- 	let rare = rare_handler(prog, v1, weights, (p)=>{
+ 	prog.rare = rare_handler(prog, v1, weights, (p)=>{
  		if(p.uniforms.idx == 8 && p.uniforms.idx2 == 7 ){
  			prog.uniforms._oscmixm = 1;
  		}
  	});
-
- 	let name = name_select(v1);
+ 	prog.name = name_select(v1);
  	let en = enumeration(v1);
  	glob.attributes = genAttributes(prog, name, en);
-
- 	if(print){
-	 	let _i = prog.blabel ? prog.blabel.innerHTML : '';
-	 	console.log(_i, name, rare);
-	 	console.log(glob.attributes);
- 	}
+	return prog.uniforms;
 }
 
 function rare_handler(prog, r, weights, uniformrule){
@@ -159,38 +151,22 @@ function useAttributes(ref) {
 const Display = ({canvasRef, block, width, height, animate, mod1, mod2, mod3, mod4, attributesRef, handleResize, ...props}) =>{
 	useAttributes(attributesRef);
 
-	//init
 	useEffect(() => {
-		if(glob.init < 1){
-			glob.prog = getProg(block_handler(prog, block, false, true));
-			glob.glview = new Glview(canvasRef.current, glob.prog);
-			window.sceneprog = glob.prog;
-			glob.init++;
-			console.log('hi', glob.init);
-		}
-		else{
-			console.log('reinit');
-			glob.glview.reinitCanvas(canvasRef.current);
-		}
+		
+		glob.prog = getProg(block_handler(prog, block));
+		glob.glview = new Glview(canvasRef.current, glob.prog);
+		window.sceneprog = glob.prog;
+	 	console.log(prog.name, prog.rare);
+ 		console.log(glob.attributes);
+
 		return ()=>{
-			console.log('bye');
 			if(glob.glview){glob.glview.switchPogram(-1);}
 		}
 
-	}, [canvasRef]);
+	}, [block]);
 
-	//block update
-	useEffect(() =>{
-
-		block_handler(glob.prog, block, true);
-
-	},[block]);
-
-	//mod update
 	useEffect(() =>{	
-
 		mod_handler(glob.prog, mod1, mod2, mod3, mod4);
-
 	},[mod1, mod2, mod3, mod4]);
 
 	return useMemo(() => {
@@ -198,8 +174,8 @@ const Display = ({canvasRef, block, width, height, animate, mod1, mod2, mod3, mo
 			<canvas
 				width={width}
 				height={height}
-				// style={{ width: '100%', height: '100%' }}
-				style={{ width: '78%', height: '68.25%' }}
+				style={{ width: '100%', height: '100%' }}
+				// style={{ width: '78%', height: '68.25%' }}
 				ref={canvasRef}
 				{...props}
 			/>

@@ -5,6 +5,7 @@ import
 drawBufferInfo,
 setBuffersAndAttributes,
 createTexture,
+createTextures,
 createProgramInfo,
 createBufferInfoFromArrays,
 resizeCanvasToDisplaySize}
@@ -71,6 +72,19 @@ const prog_default = {
     ctl: undefined,
     on: true
 };
+
+function loadTexturePromise(gl, tex){
+
+
+	return new Promise((resolve, reject) => {
+
+		createTexture(gl, tex, (res)=>{
+	        resolve(true);
+	    }); 
+
+	});
+
+}
 
 function pgm_render(time){
     this.gl.useProgram(this.programInfo.program);
@@ -172,12 +186,24 @@ class GlProg{
     init(node){
         let p_tex = this.prog.textures;
         if (!(p_tex instanceof Array)) p_tex = [p_tex];
+
         for(let tex of p_tex){
-            for(let key in tex) 
-                this.uniforms[key] = createTexture(this.gl, gl_fields(this.gl, tex[key]), (res)=>{
-                	// console.log('texture loaded');
-                }); 
+        	let opt = {}
+            for(let key in tex) {
+            	opt.key = gl_fields(this.gl, tex[key]);
+                // this.uniforms[key] = createTexture(this.gl, gl_fields(this.gl, tex[key]), (res)=>{
+                // 	// console.log('texture loaded');
+                // }); 
+            }
+            let o_t = createTextures(this.gl, opt, (res)=>{
+            	// console.log('texture loaded');
+            });
+            for(let key in o_t){
+            	this.uniforms[key] = o_t[key];
+            }
+
         }
+
         if(this.prog.fs instanceof Array){
             this.fsprogs = [];
             for(let fs of this.prog.fs)

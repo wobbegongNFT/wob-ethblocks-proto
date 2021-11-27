@@ -48,7 +48,7 @@ const prog = {
 	 // rendercb : rendercb,
 	  // gui: gui,
 	  // on: false
-	 // clearcolor: [0.2, 0.8, 0.0, 1],
+	 clearcolor: [0.2, 0.8, 0.0, 1],
 	 etc : tex_len
 };
 
@@ -59,7 +59,8 @@ function getProg(u){
 				 {u_sampler2 : make_tex_options(base64.toa[u.idx2])}, 
 				 {u_sampler3 : make_tex_options(base64.mage[u.idr])}],
 	 uniforms: u,
-	 etc : tex_len
+	 etc : tex_len,
+	 clearcolor: [0,0,0,1],
 	};
 }
 
