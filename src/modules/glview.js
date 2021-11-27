@@ -73,6 +73,9 @@ const prog_default = {
 };
 
 function pgm_render(time){
+    this.gl.useProgram(this.programInfo.program);
+    setBuffersAndAttributes(this.gl, this.programInfo, this.bufferInfo); 
+
     this.uniforms.u_time = time * 0.001;
     this.uniforms.u_resolution = [this.gl.canvas.width, this.gl.canvas.height];
     this.prog.rendercb(this.pgm);
@@ -147,6 +150,23 @@ class GlProg{
             arrays : this.prog.arrays,
             res : this.prog.res
         };
+    }
+
+    reinitCtx(gl){
+        this.gl = gl;
+        this.programInfo = null;
+        this.bufferInfo = null;
+        this.req = null;
+        this.chain = (this.prog.chain && this.prog.chain.length)? [] : null;
+        this.render = this.chain ? pgm_chain_render.bind(this) : pgm_render.bind(this);
+        //prog.glprog = this;
+        this.pgm = {
+            uniforms : this.uniforms,
+            arrays : this.prog.arrays,
+            res : this.prog.res
+        };
+
+        this.init();    	
     }
 
     init(node){
@@ -234,10 +254,23 @@ class Glview{
     
     }
 
+    reinitCanvas(canvas){
+    	this.programs[this.active].stop();
+    	if(!canvas){ console.log('null canvas'); return; }
+    	let gl = canvas.getContext("webgl2", { premultipliedAlpha: false, antialias: true });
+    	this.prog.gl = gl;
+        gl.disable(gl.DEPTH_TEST);
+        gl.enable(gl.BLEND);
+        gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+        this.programs[this.active].reinitCtx(this.prog.gl);
+        this.programs[this.active].start();
+
+    }
+
     switchPogram(index){ 
         this.programs[this.active].stop();
         if(this.programs[this.active].gui)this.programs[this.active].gui.hide();
-        if(this.programs[index]){
+        if(index >= 0 && this.programs[index]){
         	this.active = index;
             this.programs[index].start();
             if(this.programs[this.active].gui)this.programs[this.active].gui.show();

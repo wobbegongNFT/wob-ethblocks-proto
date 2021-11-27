@@ -18,54 +18,12 @@ const styleMetadata = {
     mod4: 0.5,
   },
 };
-
 export { styleMetadata };
 
-function genAttributes(prog, name, en){
-	let attr = [];
-	if(name){
-		attr.push({
-			 trait_type: 'title',
-			 value: name
-		});
-	}
-	if(prog.uniforms.tex_attr){
-		attr.push({
-			 trait_type: 'crest',
-			 value: 'circular'
-		});
-	}
-	if(prog.uniforms._oscmixm){
-		attr.push({
-			 trait_type: 'transformation',
-			 value: 'expand'
-		});
-	}
-	if(prog.uniforms.sig_attr){
-		attr.push({
-			 trait_type: 'transformation',
-			 value: 'ripple'
-		});
-	}
-	let radiance = (prog.uniforms.sat+prog.uniforms.cont)*20;
-	radiance = Math.floor(radiance*1000)*.001;
-	attr.push({
-			 trait_type: 'radiance',
-			 value: radiance
-	});
-	if(en){
-		attr.push({
-			 trait_type: en.trait,
-			 value: en.value
-		});		
-	}
-	return attr;
-}
-
-
 const glob = {
+	init : 0,
 	glview : null,
-	attributes : []
+	coord : [0,0]
 };
 
 function lerp(n, a, b){
@@ -98,9 +56,33 @@ function wbool(r, w){
 	return abs(.5-r)*2. > w ? 0 : 1;
 }
 
+function genAttributes(prog, name, en){
+	let attr = [];
+	if(name){
+		attr.push({trait_type: 'title',value: name});
+	}
+	if(prog.uniforms.tex_attr){
+		attr.push({trait_type: 'crest',value: 'circular'});
+	}
+	if(prog.uniforms._oscmixm){
+		attr.push({trait_type: 'transformation',value: 'expand'
+		});
+	}
+	if(prog.uniforms.sig_attr){
+		attr.push({trait_type: 'transformation',value: 'ripple'});
+	}
+	let radiance = (prog.uniforms.sat+prog.uniforms.cont)*20;
+	radiance = Math.floor(radiance*1000)*.001;
+	attr.push({trait_type: 'radiance',value: radiance});
+	if(en){
+		attr.push({trait_type: en.trait,value: en.value});		
+	}
+	return attr;
+}
+
 const r_const = 3;
 
-function block_handler(prog, block){
+function block_handler(prog, block, print){
 	let s = block.hash.slice(0, 16);
 	let num = parseInt(s, 16);
 	let v1 = new MT(num+r_const).random();
@@ -132,7 +114,7 @@ function block_handler(prog, block){
  	let en = enumeration(v1);
  	glob.attributes = genAttributes(prog, name, en);
 
- 	if(prog.print){
+ 	if(print){
 	 	let _i = prog.blabel ? prog.blabel.innerHTML : '';
 	 	console.log(_i, name, rare);
 	 	console.log(glob.attributes);
@@ -161,24 +143,10 @@ function mod_handler(prog, mod1, mod2, mod3, mod4, mod5, mod6){
 	prog.uniforms.offs_fine = 0; 
 }
 
-function addGUI(glview, parentel){
-	const gui = new dat.GUI({ autoPlace: false });
-	gui.domElement.style.position = 'absolute';
-	gui.domElement.style.display = 'inlineBlock'
-	gui.domElement.float = 'right'
-	gui.domElement.style.top = '2px'
-	gui.domElement.style.marginLeft = '68%'
-	parentel.appendChild(gui.domElement);
-	gui.__closeButton.style.visibility = "hidden";
-	glview.initGui(gui);
-}
-
 function useAttributes(ref) {
 	useEffect(() => {
 		ref.current = () => {
 			return {
-				// This is called when the final image is generated, when creator opens the Mint NFT modal.
-				// https://docs.opensea.io/docs/metadata-standards
 				attributes : glob.attributes
 		};
 	};
@@ -190,11 +158,19 @@ const Display = ({canvasRef, block, width, height, animate, mod1, mod2, mod3, mo
 
 	//init
 	useEffect(() => {
-		glob.glview = new Glview(canvasRef.current, prog);
-		window.sceneprog = prog;
-		prog.print = false;
-		prog.blabel = document.querySelector('.value-label');
+		if(glob.init < 1){
+			block_handler(prog, block);
+			glob.glview = new Glview(canvasRef.current, prog);
+			window.sceneprog = prog;
+			glob.init++;
+			console.log('hi', glob.init);
+		}
+		else{
+			console.log('reinit');
+			glob.glview.reinitCanvas(canvasRef.current);
+		}
 		return ()=>{
+			console.log('bye');
 			if(glob.glview){glob.glview.switchPogram(-1);}
 		}
 
@@ -203,7 +179,7 @@ const Display = ({canvasRef, block, width, height, animate, mod1, mod2, mod3, mo
 	//block update
 	useEffect(() =>{
 
-		block_handler(prog, block);
+		block_handler(prog, block, true);
 
 	},[block]);
 
@@ -219,6 +195,7 @@ const Display = ({canvasRef, block, width, height, animate, mod1, mod2, mod3, mo
 			<canvas
 				width={width}
 				height={height}
+				// style={{ width: '100%', height: '100%' }}
 				style={{ width: '78%', height: '68.25%' }}
 				ref={canvasRef}
 				{...props}
