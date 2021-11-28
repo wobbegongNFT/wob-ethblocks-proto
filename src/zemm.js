@@ -1,6 +1,6 @@
 import fs from "./zemm-fs.js";
-import base64 from '../resources/base64curated.js';
-// import base64 from '../resources/base64test.js';
+// import base64 from '../resources/base64curated.js';
+import base64 from '../resources/base64test.js';
 
 /*
 const tex_options = {
@@ -57,7 +57,7 @@ function getProg(u){
 	 fs: fs,
 	 textures: [{u_sampler : make_tex_options(base64.mage[u.idx])}, 
 				 {u_sampler2 : make_tex_options(base64.toa[u.idx2])}, 
-				 {u_sampler3 : make_tex_options(base64.mage[u.idr])}],
+				 {u_sampler3 : make_tex_options(base64.mage[u.idxr])}],
 	 uniforms: u,
 	 etc : tex_len,
 	 clearcolor: [0,0,0,1],

@@ -73,19 +73,15 @@ const prog_default = {
     on: true
 };
 
-function loadTexturePromise(gl, tex){
-
-
+/*
+function loadTexturesPromise(gl, opt){
 	return new Promise((resolve, reject) => {
-
-		createTexture(gl, tex, (res)=>{
-	        resolve(true);
-	    }); 
-
-	});
-
+		let t = createTextures(gl, opt, (res)=>{           	
+			resolve(t);
+		});
+    }); 
 }
-
+*/
 function pgm_render(time){
     this.gl.useProgram(this.programInfo.program);
     setBuffersAndAttributes(this.gl, this.programInfo, this.bufferInfo); 
@@ -186,23 +182,20 @@ class GlProg{
     init(node){
         let p_tex = this.prog.textures;
         if (!(p_tex instanceof Array)) p_tex = [p_tex];
-
+        let opt = {}
         for(let tex of p_tex){
-        	let opt = {}
-            for(let key in tex) {
-            	opt.key = gl_fields(this.gl, tex[key]);
-                // this.uniforms[key] = createTexture(this.gl, gl_fields(this.gl, tex[key]), (res)=>{
-                // 	// console.log('texture loaded');
-                // }); 
+            for(let key in tex) { 
+            	opt[key] = gl_fields(this.gl, tex[key]);
+				this.uniforms[key] = createTexture(this.gl, gl_fields(this.gl, tex[key]), (res)=>{
+              	// console.log('texture loaded');
+              	}); 
             }
-            let o_t = createTextures(this.gl, opt, (res)=>{
-            	// console.log('texture loaded');
-            });
-            for(let key in o_t){
-            	this.uniforms[key] = o_t[key];
-            }
-
         }
+        // let o_t = createTextures(this.gl, opt, (res)=>{           	
+            // for(let key in o_t){
+				// this.uniforms[key] = o_t[key];
+			// }
+        // });
 
         if(this.prog.fs instanceof Array){
             this.fsprogs = [];

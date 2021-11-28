@@ -21,10 +21,8 @@ const styleMetadata = {
 export { styleMetadata };
 
 const glob = {
-	init : 0,
 	glview : null,
-	prog: null,
-	coord : [0,0]
+	prog: null
 };
 
 function lerp(n, a, b){
@@ -45,13 +43,6 @@ function piecewise(x, xs, ys) {
     }
     return ys[lo] + (ys[hi] - ys[lo]) / (xs[hi] - xs[lo]) * (x - xs[lo]);
 };
-
-function hash11(f){
-    f = fract(f * .1031);
-    f *= f + 33.33;
-    f *= f + f;
-    return fract(f);
-}
 
 function wbool(r, w){
 	return abs(.5-r)*2. > w ? 0 : 1;

@@ -6,6 +6,7 @@
 
  module.exports = {
 	plugins: [
+
 		new webpack.ProvidePlugin({
 			"React": "react",
 		}),
@@ -18,6 +19,7 @@
 		// 	reportFilename: "webpack-bundle-analyzer-report.html"
 		// }),
 		// new WebpackAssetsManifest()
+
 	],
 	mode: 'development',
 	entry: {
@@ -43,9 +45,9 @@
 			    exclude: /(node_modules|bower_components)/,
 			    use: {
 			        loader: "babel-loader",
-			        options: {presets: ["@babel/preset-env", ["@babel/preset-react"]]
+			        options: {presets: ["@babel/preset-env", ["@babel/preset-react"]],
 			        	// ,plugins: ["@babel/plugin-transform-modules-commonjs"]
-			        	// ,plugins: ["@babel/plugin-transform-runtime"],
+			        	// plugins: [["@babel/plugin-transform-runtime", { regenerator: true}]],
 					}
 			    }
 		    },
