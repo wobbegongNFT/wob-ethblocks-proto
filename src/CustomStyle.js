@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef } from 'react';
+import React, { useEffect, useMemo, useRef, useCallback, useState } from 'react';
 import { Glview } from "./modules/glview.js";
 import prog, {getProg} from "./zemm.js";
 import MT from './mersenne.js';
@@ -142,36 +142,54 @@ function useAttributes(ref) {
 const Display = ({canvasRef, block, width, height, animate, mod1, mod2, mod3, mod4, attributesRef, handleResize, ...props}) =>{
 	useAttributes(attributesRef);
 
-	useEffect(() => {
-		
-		glob.prog = getProg(block_handler(prog, block));
-		glob.glview = new Glview(canvasRef.current, glob.prog);
-		window.sceneprog = glob.prog;
-	 	console.log(prog.name, prog.rare);
- 		console.log(glob.attributes);
+	const [domNode, setDomNode] = useState(null);
 
-		return ()=>{
-			if(glob.glview){glob.glview.switchPogram(-1);}
-		}
+	const onRefChange = useCallback(node => {
+	    if (node === null) { 
 
-	}, [block]);
+	    } else {
+	      console.log(node);
+	      glob.prog = getProg(block_handler(prog, block));
+	      glob.glview = new Glview(node, glob.prog);
+	    }
+	}, [block]); // adjust deps
+
+	useEffect(() =>{	
+		//setDomNode(block);
+	},[block]);
+
+	// useEffect(() => {
+	// 	console.log('init');
+	// 	glob.prog = getProg(block_handler(prog, block));
+	// 	glob.glview = new Glview(canvasRef.current, glob.prog);
+	// 	window.sceneprog = glob.prog;
+	//  	console.log(prog.name, prog.rare);
+ // 		console.log(glob.attributes);
+
+	// 	return ()=>{
+	// 		if(glob.glview){glob.glview.switchPogram(-1);}
+	// 	}
+
+	// }, [canvasRef]);
+
 
 	useEffect(() =>{	
 		mod_handler(glob.prog, mod1, mod2, mod3, mod4);
 	},[mod1, mod2, mod3, mod4]);
 
-	return useMemo(() => {
+	// return useMemo(() => {
 		return(
 			<canvas
 				width={width}
 				height={height}
-				style={{ width: '100%', height: '100%' }}
-				// style={{ width: '78%', height: '68.25%' }}
-				ref={canvasRef}
+				// style={{ width: '100%', height: '100%' }}
+				style={{ width: '78%', height: '68.25%' }}
+				// ref={canvasRef}
+				ref={onRefChange}
 				{...props}
 			/>
 		);
-	}, [canvasRef]);
+	// }, [canvasRef]);
 };
 
 export default Display;
